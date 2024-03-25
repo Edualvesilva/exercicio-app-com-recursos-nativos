@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as mediaLibrary from "expo-media-library";
+
 import { useState } from "react";
 
 export default function App() {
@@ -20,14 +22,32 @@ export default function App() {
       setImage(result.assets[0].uri);
     }
   };
+  const acessarCamera = async () => {
+    const imagem = await ImagePicker.launchCameraAsync({
+      allowsEditing: false,
+      aspect: [16, 9],
+      quality: 0.5,
+    });
+    if (!imagem.canceled) {
+      /* Usando a api do mediaLibrary para salvar no armazenamento físico do dispositivo */
+      await mediaLibrary.saveToLibraryAsync(imagem.assets[0].uri);
+      setImage(imagem.assets[0].uri);
+    }
+    console.log(imagem);
+  };
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
-    </View>
+    <>
+      <View style={styles.container}>
+        <StatusBar style="auto" />
+        <Button title="Tirar uma nova foto" onPress={acessarCamera} />
+        <Button title="Escolha uma imagem da Galeria" onPress={pickImage} />
+        {image ? (
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        ) : (
+          <Text>Sem Foto!</Text>
+        )}
+      </View>
+    </>
   );
 }
 
