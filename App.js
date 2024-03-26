@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "./screens/Home.js";
 import Comeceagora from "./screens/Comeceagora.js";
+import Historico from "./screens/Historico.js";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
             component={Comeceagora}
             options={{ title: "Comece Agora" }}
           />
+          <Stack.Screen name="Historico" component={Historico} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
