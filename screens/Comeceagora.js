@@ -77,8 +77,8 @@ export default function Home() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container} scr>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView>
         <StatusBar style="auto" />
 
         <Button
@@ -116,12 +116,11 @@ export default function Home() {
           <Button
             title="localizar no mapa"
             onPress={localizarNoMapa}
-            style={styles.buttonMap}
             color="#007bff"
           />
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
   map: { width: 300, height: 300, borderColor: "#FFF", marginVertical: 10 },
 
   imagem: {
-    width: 200,
+    width: 300,
     height: 200,
     resizeMode: "cover",
     borderRadius: 5,
@@ -148,8 +147,8 @@ const styles = StyleSheet.create({
   },
 
   textoinput: {
-    width: 200,
-    height: 40,
+    width: 300,
+    height: 50,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
