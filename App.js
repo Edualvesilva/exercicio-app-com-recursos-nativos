@@ -2,10 +2,44 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as mediaLibrary from "expo-media-library";
+import MapView, { Marker } from "react-native-maps";
+import { useState, useEffect, useRef } from "react";
 
-import { useState } from "react";
-
+import * as Location from "expo-location";
 export default function App() {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const mapRef = useRef(null);
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (location) {
+      mapRef.current?.animateToRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      });
+    }
+  }, [location]);
+
+  let text = "Aguardando...";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -35,6 +69,18 @@ export default function App() {
     }
     console.log(imagem);
   };
+
+  const localizarNoMapa = () => {
+    if (location && mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      });
+    }
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -42,10 +88,26 @@ export default function App() {
         <Button title="Tirar uma nova foto" onPress={acessarCamera} />
         <Button title="Escolha uma imagem da Galeria" onPress={pickImage} />
         {image ? (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Image source={{ uri: image }} style={styles.imagem} />
         ) : (
           <Text>Sem Foto!</Text>
         )}
+
+        <View>
+          {location && location.coords ? (
+            <MapView style={styles.map} ref={mapRef}>
+              <Marker
+                coordinate={{
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                }}
+              />
+            </MapView>
+          ) : (
+            <Text>Carregando mapa.....</Text>
+          )}
+          <Button title="localizar no mapa" onPress={localizarNoMapa} />
+        </View>
       </View>
     </>
   );
@@ -54,8 +116,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#9B9898",
   },
+  map: { width: 350, height: 350, borderColor: "#FFF" },
 });
