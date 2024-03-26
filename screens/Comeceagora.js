@@ -14,7 +14,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useState, useEffect, useRef } from "react";
 
 import * as Location from "expo-location";
-export default function Home() {
+export default function Comeceagora({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
@@ -76,6 +76,15 @@ export default function Home() {
     }
   };
 
+  const handleSaveLocation = () => {
+    if (location && image) {
+      navigation.navigate("Historico", { location: text, image: image });
+    } else {
+      alert(
+        "Você precisa tomar uma foto e selecionar uma localização antes de salvar."
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -118,6 +127,7 @@ export default function Home() {
             onPress={localizarNoMapa}
             color="#007bff"
           />
+          <Button title="Salvar localização?" onPress={handleSaveLocation} />
         </View>
       </ScrollView>
     </View>
