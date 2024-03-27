@@ -27,6 +27,7 @@ export default function Comeceagora({ navigation }) {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
+
       setLocation(location);
     })();
   }, []);
@@ -62,7 +63,6 @@ export default function Comeceagora({ navigation }) {
       await mediaLibrary.saveToLibraryAsync(imagem.assets[0].uri);
       setImage(imagem.assets[0].uri);
     }
-    console.log(imagem);
   };
 
   const localizarNoMapa = () => {
@@ -87,7 +87,7 @@ export default function Comeceagora({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar style="auto" />
 
         <Button
