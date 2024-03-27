@@ -3,12 +3,12 @@ import { View, Text, Image } from "react-native";
 import { StyleSheet } from "react-native";
 
 export default function Historico({ route }) {
-  const { location, image, text } = route.params;
+  const { location, image, texto } = route.params;
 
   if (!location.coords) {
     return <View />;
   }
-
+  console.log(texto);
   return (
     <View style={styles.container}>
       {image && <Image source={{ uri: image }} style={styles.image} />}
@@ -23,7 +23,7 @@ export default function Historico({ route }) {
       )}
 
       <Text style={styles.title}>Nome da localização:</Text>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text}>{texto}</Text>
     </View>
   );
 }

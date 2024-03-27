@@ -17,6 +17,7 @@ import * as Location from "expo-location";
 export default function Comeceagora({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [texto, setTexto] = useState("");
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -81,6 +82,7 @@ export default function Comeceagora({ navigation }) {
       navigation.navigate("Historico", {
         location: location,
         image: image,
+        texto: texto,
       });
     } else {
       alert(
@@ -104,6 +106,8 @@ export default function Comeceagora({ navigation }) {
             placeholder="Nome da sua localização"
             style={styles.textoinput}
             autoFocus
+            value={texto}
+            onChangeText={setTexto}
           />
         </View>
         {image ? (
