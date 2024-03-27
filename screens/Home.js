@@ -14,6 +14,7 @@ export default function Home({ navigation }) {
           style={styles.button}
           color="#007bff"
         />
+
         <Button
           title="Historico"
           onPress={() => {

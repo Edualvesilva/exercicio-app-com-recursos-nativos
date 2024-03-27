@@ -78,7 +78,10 @@ export default function Comeceagora({ navigation }) {
 
   const handleSaveLocation = () => {
     if (location && image) {
-      navigation.navigate("Historico", { location: text, image: image });
+      navigation.navigate("Historico", {
+        location: location,
+        image: image,
+      });
     } else {
       alert(
         "Você precisa tomar uma foto e selecionar uma localização antes de salvar."

@@ -1,4 +1,4 @@
-import { Button, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -30,6 +30,7 @@ export default function App() {
             component={Comeceagora}
             options={{ title: "Comece Agora" }}
           />
+
           <Stack.Screen name="Historico" component={Historico} />
         </Stack.Navigator>
       </NavigationContainer>
