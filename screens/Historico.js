@@ -3,7 +3,6 @@ import { View, Text, Image } from "react-native";
 import { StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function Historico() {
-  /* useState to register the data loaded from Storage. */
   const [favoritesList, setfavoritesList] = useState([]);
 
   /*  useEffect will be used when the user get in the favorites screen (so,it just happens once)*/
@@ -26,6 +25,8 @@ export default function Historico() {
   }, []);
   return (
     <View style={styles.container}>
+      {}
+
       {image && <Image source={{ uri: image }} style={styles.image} />}
 
       <Text style={styles.title}>Localização:</Text>
