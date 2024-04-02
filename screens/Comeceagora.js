@@ -18,6 +18,7 @@ export default function Comeceagora({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [texto, setTexto] = useState("");
+  const [isLocationSaved, setIsLocationSaved] = useState(false);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -76,14 +77,28 @@ export default function Comeceagora({ navigation }) {
       });
     }
   };
-  const handleSaveLocation = async (value) => {
+  const handleSaveLocation = async () => {
     try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@edusalve", jsonValue);
-    } catch (e) {
-      // saving error
+      if (location) {
+        const data = {
+          image: image,
+          location: location,
+          texto: texto,
+        };
+        const jsonValue = JSON.stringify(data);
+        await AsyncStorage.setItem("@edusalve", jsonValue);
+        setIsLocationSaved(true);
+      }
+    } catch (error) {
+      console.log("Error saving location:", error);
     }
   };
+
+  useEffect(() => {
+    if (isLocationSaved) {
+      navigation.navigate("Historico");
+    }
+  }, [isLocationSaved]);
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
