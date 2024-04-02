@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Historico() {
-  const [image, setImage] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [texto, setTexto] = useState("");
+  const [historico, setHistorico] = useState([]);
 
   useEffect(() => {
     const loadHistorico = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("@edusalve");
         if (jsonValue !== null) {
-          const data = JSON.parse(jsonValue);
-          setImage(data.image);
-          setLocation(data.location);
-          setTexto(data.texto);
+          setHistorico(JSON.parse(jsonValue));
         }
       } catch (error) {
         console.log("Error loading data from AsyncStorage:", error);
@@ -26,21 +21,28 @@ export default function Historico() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {image && <Image source={{ uri: image }} style={styles.image} />}
+    <ScrollView>
+      {historico.map((item, index) => (
+        <View key={index} style={styles.itemContainer}>
+          <Text style={styles.title}>Imagem {index + 1}:</Text>
+          {item.image && (
+            <Image source={{ uri: item.image }} style={styles.image} />
+          )}
 
-      <Text style={styles.title}>Localização:</Text>
-      {location && (
-        <Text style={styles.text}>
-          Latitude: {location.coords.latitude}
-          {"\n"}
-          Longitude: {location.coords.longitude}
-        </Text>
-      )}
+          <Text style={styles.title}>Localização:</Text>
+          {item.location && (
+            <Text style={styles.text}>
+              Latitude: {item.location.coords.latitude}
+              {"\n"}
+              Longitude: {item.location.coords.longitude}
+            </Text>
+          )}
 
-      <Text style={styles.title}>Nome da localização:</Text>
-      <Text style={styles.text}>{texto}</Text>
-    </View>
+          <Text style={styles.title}>Nome da localização:</Text>
+          <Text style={styles.text}>{item.texto}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 

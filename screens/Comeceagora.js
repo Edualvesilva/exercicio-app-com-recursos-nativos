@@ -85,8 +85,10 @@ export default function Comeceagora({ navigation }) {
           location: location,
           texto: texto,
         };
-        const jsonValue = JSON.stringify(data);
-        await AsyncStorage.setItem("@edusalve", jsonValue);
+        let historico = await AsyncStorage.getItem("@edusalve");
+        historico = historico ? JSON.parse(historico) : [];
+        historico.push(data);
+        await AsyncStorage.setItem("@edusalve", JSON.stringify(historico));
         setIsLocationSaved(true);
       }
     } catch (error) {
