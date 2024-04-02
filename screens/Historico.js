@@ -1,14 +1,29 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import { StyleSheet } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+export default function Historico() {
+  /* useState to register the data loaded from Storage. */
+  const [favoritesList, setfavoritesList] = useState([]);
 
-export default function Historico({ route }) {
-  const { location, image, texto } = route.params;
+  /*  useEffect will be used when the user get in the favorites screen (so,it just happens once)*/
+  useEffect(() => {
+    const LoadFavorites = async () => {
+      try {
+        /* Acessing the created storage before and saving the data's strings */
+        const data = await AsyncStorage.getItem("@favoritesEdu");
 
-  if (!location.coords) {
-    return <View />;
-  }
-  console.log(texto);
+        /* If there's data, turn it into a object (JSON.parse) and update the state with a favoritesList */
+        if (data) {
+          setfavoritesList(JSON.parse(data));
+        }
+      } catch (error) {
+        console.error("Error to load the data: " + error);
+        Alert.alert("Error", "Something went wrong ");
+      }
+    };
+    LoadFavorites();
+  }, []);
   return (
     <View style={styles.container}>
       {image && <Image source={{ uri: image }} style={styles.image} />}

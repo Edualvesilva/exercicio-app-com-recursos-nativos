@@ -12,7 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as mediaLibrary from "expo-media-library";
 import MapView, { Marker } from "react-native-maps";
 import { useState, useEffect, useRef } from "react";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 export default function Comeceagora({ navigation }) {
   const [location, setLocation] = useState(null);
@@ -76,18 +76,12 @@ export default function Comeceagora({ navigation }) {
       });
     }
   };
-
-  const handleSaveLocation = () => {
-    if (location && image) {
-      navigation.navigate("Historico", {
-        location: location,
-        image: image,
-        texto: texto,
-      });
-    } else {
-      alert(
-        "Você precisa tomar uma foto e selecionar uma localização antes de salvar."
-      );
+  const handleSaveLocation = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@edusalve", jsonValue);
+    } catch (e) {
+      // saving error
     }
   };
   return (
